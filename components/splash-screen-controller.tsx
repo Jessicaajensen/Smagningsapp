@@ -1,14 +1,21 @@
 import { useAuthContext } from '../hooks/use-auth-context'
-import { SplashScreen } from 'expo-router'
+import { useEffect } from 'react'
+import * as SplashScreen from 'expo-splash-screen'
 
-SplashScreen.preventAutoHideAsync()
+void SplashScreen.preventAutoHideAsync().catch(() => {
+  // preventAutoHideAsync can reject if called after splash is already hidden.
+})
 
 export function SplashScreenController() {
   const { isLoading } = useAuthContext()
 
-  if (!isLoading) {
-    SplashScreen.hideAsync()
-  }
+  useEffect(() => {
+    if (isLoading) return
+
+    void SplashScreen.hideAsync().catch(() => {
+      // hideAsync can reject if splash is not currently shown.
+    })
+  }, [isLoading])
 
   return null
 }
