@@ -1,19 +1,34 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { useRouter } from 'expo-router'
 import { profileStyles as styles } from './profile.styles'
 import { supabase } from '../../lib/supabase'
 import { useState } from 'react'
 
 export default function ProfileScreen() {
   const [isSigningOut, setIsSigningOut] = useState(false)
+  const router = useRouter()
 
   async function handleSignOut() {
     setIsSigningOut(true)
-    const { error } = await supabase.auth.signOut()
-
-    if (error) {
-      console.error('Error signing out:', error)
+    try {
+      const { error } = await supabase.auth.signOut()
+      
+      if (error) {
+        console.error('Supabase signOut error:', {
+          message: error.message,
+          status: error.status,
+          name: error.name,
+        })
+        // Even if server logout fails, navigate away to force re-auth
+      }
+      
+      // Navigate to login regardless of server response
+      router.replace('/login')
+    } catch (error) {
+      console.error('Unexpected error during sign out:', error)
+      // Still navigate on error
+      router.replace('/login')
     }
-    setIsSigningOut(false)
   }
 
   return (
