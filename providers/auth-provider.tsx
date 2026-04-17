@@ -12,13 +12,23 @@ export default function AuthProvider({ children }: PropsWithChildren) {
     const fetchClaims = async () => {
       setIsLoading(true)
 
-      const { data, error } = await supabase.auth.getClaims()
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession()
 
       if (error) {
-        console.error('Error fetching claims:', error)
+        console.error('Error fetching session:', error)
       }
 
-      setClaims(data?.claims ?? null)
+      if (!session?.user?.id) {
+        setClaims(null)
+        setIsLoading(false)
+        return
+      }
+
+      // Keep existing claims shape for downstream usage.
+      setClaims({ sub: session.user.id })
       setIsLoading(false)
     }
 
@@ -28,8 +38,13 @@ export default function AuthProvider({ children }: PropsWithChildren) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (_event, _session) => {
       console.log('Auth state changed:', { event: _event })
-      const { data } = await supabase.auth.getClaims()
-      setClaims(data?.claims ?? null)
+
+      if (!_session?.user?.id) {
+        setClaims(null)
+        return
+      }
+
+      setClaims({ sub: _session.user.id })
     })
 
     // Cleanup subscription on unmount

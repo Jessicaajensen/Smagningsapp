@@ -8,27 +8,25 @@ export default function ProfileScreen() {
   const [isSigningOut, setIsSigningOut] = useState(false)
   const router = useRouter()
 
-  async function handleSignOut() {
+  function handleSignOut() {
     setIsSigningOut(true)
-    try {
-      const { error } = await supabase.auth.signOut()
-      
-      if (error) {
-        console.error('Supabase signOut error:', {
-          message: error.message,
-          status: error.status,
-          name: error.name,
-        })
-        // Even if server logout fails, navigate away to force re-auth
-      }
-      
-      // Navigate to login regardless of server response
-      router.replace('/login')
-    } catch (error) {
-      console.error('Unexpected error during sign out:', error)
-      // Still navigate on error
-      router.replace('/login')
-    }
+
+    // Navigate immediately; do not block UX on logout network requests.
+    router.replace('/login')
+
+    void supabase.auth
+      .signOut({ scope: 'local' })
+      .then(({ error }) => {
+        if (error) {
+          console.error('Supabase local signOut error:', error)
+        }
+      })
+      .catch((error) => {
+        console.error('Unexpected sign out error:', error)
+      })
+      .finally(() => {
+        setIsSigningOut(false)
+      })
   }
 
   return (
