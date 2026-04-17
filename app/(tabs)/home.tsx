@@ -1,12 +1,4 @@
-import { Link } from 'expo-router';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-
-const navItems = [
-  { href: '/home', label: 'Home' },
-  { href: '/profile', label: 'Profile' },
-  { href: '/collection', label: 'Collection' },
-  { href: '/feed', label: 'Feed' },
-];
 
 export default function HomeScreen() {
   return (
@@ -15,16 +7,9 @@ export default function HomeScreen() {
         <Text style={styles.kicker}>Home page</Text>
         <Text style={styles.title}>Welcome to Smagningsapp</Text>
         <Text style={styles.body}>
-          This starter now uses Expo Router, so each screen has its own route.
+          This starter now uses Expo Router tabs, so each main screen has a
+          persistent bottom navigation bar.
         </Text>
-      </View>
-
-      <View style={styles.navRow}>
-        {navItems.map((item) => (
-          <Link key={item.href} href={item.href} style={styles.navLink}>
-            {item.label}
-          </Link>
-        ))}
       </View>
     </SafeAreaView>
   );
@@ -43,7 +28,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 24,
     padding: 24,
-    marginBottom: 20,
   },
   kicker: {
     color: '#38bdf8',
@@ -62,18 +46,5 @@ const styles = StyleSheet.create({
     color: '#cbd5e1',
     fontSize: 16,
     lineHeight: 24,
-  },
-  navRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-  },
-  navLink: {
-    backgroundColor: '#1d4ed8',
-    color: '#ffffff',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 999,
-    fontWeight: '700',
   },
 });
