@@ -1,7 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Tabs } from 'expo-router';
 
-const iconColor = '#7c6b73';
+const iconColor = '#7a6c66';
 
 function TabIcon({ name, color, size }: { name: keyof typeof Ionicons.glyphMap; color: string; size: number }) {
   return <Ionicons name={name} size={size} color={color} />;
@@ -14,22 +14,23 @@ export default function TabsLayout() {
         headerShown: false,
         tabBarShowLabel: true,
         tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: '600',
+          fontSize: 11,
+          fontWeight: '700',
+          marginBottom: 2,
         },
         tabBarStyle: {
-          backgroundColor: '#ffffff',
-          borderTopColor: '#f1f1f1',
+          backgroundColor: '#fffdf9',
+          borderTopColor: '#eee4d8',
           borderTopWidth: 1,
-          height: 86,
+          height: 90,
           paddingTop: 10,
-          paddingBottom: 12,
-          paddingHorizontal: 10,
+          paddingBottom: 14,
+          paddingHorizontal: 12,
         },
-        tabBarActiveTintColor: '#7b2d3a',
+        tabBarActiveTintColor: '#7a2f3d',
         tabBarInactiveTintColor: iconColor,
         tabBarItemStyle: {
-          paddingVertical: 4,
+          paddingVertical: 6,
         },
       }}
     >

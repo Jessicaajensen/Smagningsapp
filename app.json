@@ -10,6 +10,9 @@
     },
     "assetBundlePatterns": [
       "**/*"
+    ],
+    "plugins": [
+      "expo-asset"
     ]
   }
 }
