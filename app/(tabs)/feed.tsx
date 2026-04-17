@@ -8,7 +8,7 @@ export default function FeedScreen() {
         <Text style={styles.pageKicker}>Feed page</Text>
         <Text style={styles.pageTitle}>Recent updates</Text>
         <Text style={styles.pageBody}>
-          Add a scrolling feed for posts, updates, or activity here.
+          Feed page
         </Text>
       </View>
     </View>

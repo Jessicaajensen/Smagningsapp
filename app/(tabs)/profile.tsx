@@ -8,7 +8,7 @@ export default function ProfileScreen() {
         <Text style={styles.pageKicker}>Profile page</Text>
         <Text style={styles.pageTitle}>Your profile</Text>
         <Text style={styles.pageBody}>
-          Add account details, preferences, and saved settings here.
+          Profile page
         </Text>
       </View>
     </View>

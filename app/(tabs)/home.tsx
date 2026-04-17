@@ -6,10 +6,9 @@ export default function HomeScreen() {
     <View style={styles.screenCenter}>
       <View style={styles.mainCard}>
         <Text style={styles.pageKicker}>Home page</Text>
-        <Text style={styles.pageTitle}>Welcome to Smagningsapp</Text>
+        <Text style={styles.pageTitle}>Welcome til</Text>
         <Text style={styles.pageBody}>
-          This starter uses Expo Router tabs, and now all pages share the same
-          visual style.
+          Home page
         </Text>
       </View>
     </View>

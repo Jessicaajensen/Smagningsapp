@@ -8,7 +8,7 @@ export default function CollectionScreen() {
         <Text style={styles.pageKicker}>Collection page</Text>
         <Text style={styles.pageTitle}>Saved items</Text>
         <Text style={styles.pageBody}>
-          Use this page for saved products, recipes, or favorites.
+          Collections/bibliotek
         </Text>
       </View>
     </View>
