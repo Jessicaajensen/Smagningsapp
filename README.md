@@ -1,6 +1,6 @@
 # Smagningsapp
 
-Simple Expo React Native starter using TypeScript.
+Expo Router starter with separate routes for Home, Profile, Collection, and Feed.
 
 ## Run
 
@@ -9,4 +9,4 @@ npm install
 npm run start
 ```
 
-Then press `i` for iOS, `a` for Android, or `w` for web.
+Then open `/home`, `/profile`, `/collection`, or `/feed` from the app.
