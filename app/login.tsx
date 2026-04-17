@@ -21,7 +21,7 @@ export default function LoginScreen() {
     })
 
     if (error) {
-      setErrorMessage(error.message)
+      setErrorMessage(formatAuthError(error.message))
     }
 
     setIsSubmitting(false)
@@ -37,7 +37,7 @@ export default function LoginScreen() {
     })
 
     if (error) {
-      setErrorMessage(error.message)
+      setErrorMessage(formatAuthError(error.message))
     } else {
       setErrorMessage('Account created. Check your email to confirm if required.')
     }
@@ -107,6 +107,18 @@ export default function LoginScreen() {
       </View>
     </>
   )
+}
+
+function formatAuthError(message: string) {
+  if (message.toLowerCase().includes('email not confirmed')) {
+    return 'Your email still needs confirmation in Supabase. Confirm it in the dashboard or disable email confirmation for development.'
+  }
+
+  if (message.toLowerCase().includes('invalid login credentials')) {
+    return 'Wrong email or password. Double-check the test account values.'
+  }
+
+  return message
 }
 
 const styles = StyleSheet.create({
