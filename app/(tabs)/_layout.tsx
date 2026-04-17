@@ -1,10 +1,18 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { Tabs } from 'expo-router';
+import Ionicons from '@expo/vector-icons/Ionicons'
+import { Tabs } from 'expo-router'
 
-const iconColor = '#7a6c66';
+const iconColor = '#7a6c66'
 
-function TabIcon({ name, color, size }: { name: keyof typeof Ionicons.glyphMap; color: string; size: number }) {
-  return <Ionicons name={name} size={size} color={color} />;
+function TabIcon({
+  name,
+  color,
+  size,
+}: {
+  name: keyof typeof Ionicons.glyphMap
+  color: string
+  size: number
+}) {
+  return <Ionicons name={name} size={size} color={color} />
 }
 
 export default function TabsLayout() {
@@ -39,7 +47,9 @@ export default function TabsLayout() {
         options={{
           title: 'Feed',
           tabBarLabel: 'Feed',
-          tabBarIcon: ({ color, size }) => <TabIcon name="wine-outline" color={color} size={size} />,
+          tabBarIcon: ({ color, size }) => (
+            <TabIcon name="wine-outline" color={color} size={size} />
+          ),
         }}
       />
       <Tabs.Screen
@@ -47,25 +57,31 @@ export default function TabsLayout() {
         options={{
           title: 'Bibliotek',
           tabBarLabel: 'Bibliotek',
-          tabBarIcon: ({ color, size }) => <TabIcon name="book-outline" color={color} size={size} />,
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: 'Venner',
-          tabBarLabel: 'Venner',
-          tabBarIcon: ({ color, size }) => <TabIcon name="people-outline" color={color} size={size} />,
+          tabBarIcon: ({ color, size }) => (
+            <TabIcon name="book-outline" color={color} size={size} />
+          ),
         }}
       />
       <Tabs.Screen
         name="home"
         options={{
+          title: 'Home',
+          tabBarLabel: 'Home',
+          tabBarIcon: ({ color, size }) => (
+            <TabIcon name="home-outline" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
           title: 'Profil',
           tabBarLabel: 'Profil',
-          tabBarIcon: ({ color, size }) => <TabIcon name="person-outline" color={color} size={size} />,
+          tabBarIcon: ({ color, size }) => (
+            <TabIcon name="person-outline" color={color} size={size} />
+          ),
         }}
       />
     </Tabs>
-  );
+  )
 }
