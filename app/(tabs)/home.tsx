@@ -1,6 +1,6 @@
 import { Text, View, FlatList, Pressable, StyleSheet } from 'react-native';
 import { useEffect, useState } from 'react'
-import { useRouter } from 'expo-router'
+import { usePathname, useRouter } from 'expo-router'
 import { sharedStyles as styles } from './shared.styles';
 import { supabase } from '../../lib/supabase'
 
@@ -12,6 +12,7 @@ type Wine = {
 export default function HomeScreen() {
   const [wine, setWine] = useState<Wine[]>([])
   const router = useRouter()
+  const pathname = usePathname()
 
   useEffect(() => {
     getWine()
@@ -37,7 +38,7 @@ export default function HomeScreen() {
         )}
       />
         <Pressable
-          onPress={() => router.push('/questionnaire')}
+          onPress={() => router.push({ pathname: '/questionnaire', params: { returnTo: pathname } })}
           style={({ pressed }) => [
             buttonStyles.tastingButton,
             pressed && buttonStyles.buttonPressed,

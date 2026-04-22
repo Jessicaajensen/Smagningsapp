@@ -1,7 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons'
-import { Tabs } from 'expo-router'
+import { Tabs, usePathname, useRouter } from 'expo-router'
 import { Pressable, Text, View, StyleSheet } from 'react-native'
-import { useRouter } from 'expo-router'
 
 const iconColor = '#7a6c66'
 
@@ -19,10 +18,11 @@ function TabIcon({
 
 function StartTastingButton() {
   const router = useRouter()
+  const pathname = usePathname()
 
   return (
     <Pressable
-      onPress={() => router.push('/questionnaire')}
+      onPress={() => router.push({ pathname: '/questionnaire', params: { returnTo: pathname } })}
       style={({ pressed }) => [styles.startButton, pressed && styles.startButtonPressed]}
       accessibilityRole="button"
       accessibilityLabel="Start smagning"

@@ -1,5 +1,5 @@
 import { View, Text, Pressable, StyleSheet, SafeAreaView, ScrollView, Alert } from 'react-native'
-import { useRouter } from 'expo-router'
+import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useState } from 'react'
 import { QuestionnaireQuestion } from '../components/questionnaire-question'
 import { AromaGrid } from '../components/aroma-grid'
@@ -131,6 +131,8 @@ const WINE_QUESTIONS: WineQuestion[] = [
 
 export default function QuestionnaireScreen() {
   const router = useRouter()
+  const { returnTo } = useLocalSearchParams<{ returnTo?: string | string[] }>()
+  const returnToPath = Array.isArray(returnTo) ? returnTo[0] : returnTo
   const { profile } = useAuthContext()
   const [currentStep, setCurrentStep] = useState(0)
   const [beverageType, setBeverageType] = useState<string | null>(null)
@@ -145,6 +147,11 @@ export default function QuestionnaireScreen() {
   }
 
   function handleExit() {
+    if (returnToPath) {
+      router.replace(returnToPath)
+      return
+    }
+
     router.back()
   }
 
@@ -223,15 +230,14 @@ export default function QuestionnaireScreen() {
         return
       }
 
-      Alert.alert('Success', 'Tak for din bedømmelse!', [
-        {
-          text: 'OK',
-          onPress: () => {
-            setIsSubmitting(false)
-            router.back()
-          },
-        },
-      ])
+      setIsSubmitting(false)
+
+      if (returnToPath) {
+        router.replace(returnToPath)
+        return
+      }
+
+      router.back()
     } catch (err) {
       Alert.alert('Error', `An unexpected error occurred: ${err}`)
       setIsSubmitting(false)
