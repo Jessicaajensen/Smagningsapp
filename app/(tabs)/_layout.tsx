@@ -1,5 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { Tabs } from 'expo-router'
+import { Pressable, Text, View, StyleSheet } from 'react-native'
+import { useRouter } from 'expo-router'
 
 const iconColor = '#7a6c66'
 
@@ -15,11 +17,40 @@ function TabIcon({
   return <Ionicons name={name} size={size} color={color} />
 }
 
+function StartTastingButton() {
+  const router = useRouter()
+
+  return (
+    <Pressable
+      onPress={() => router.push('/questionnaire')}
+      style={({ pressed }) => [styles.startButton, pressed && styles.startButtonPressed]}
+      accessibilityRole="button"
+      accessibilityLabel="Start smagning"
+    >
+      <Ionicons name="add" size={26} color="#fffdf9" />
+    </Pressable>
+  )
+}
+
 export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
+        headerStyle: {
+          backgroundColor: '#fffdf9',
+        },
+        headerShadowVisible: false,
+        headerTitleAlign: 'left',
+        headerTitle: () => (
+          <View style={styles.titleRow}>
+            <View style={styles.logoMark}>
+              <Ionicons name="wine-outline" size={18} color="#fffdf9" />
+            </View>
+            <Text style={styles.titleText}>Palate</Text>
+          </View>
+        ),
+        headerRight: () => <StartTastingButton />,
         tabBarShowLabel: true,
         tabBarLabelStyle: {
           fontSize: 11,
@@ -85,3 +116,36 @@ export default function TabsLayout() {
     </Tabs>
   )
 }
+
+const styles = StyleSheet.create({
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  logoMark: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#7a2f3d',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  titleText: {
+    color: '#2e251f',
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  startButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#7a2f3d',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 4,
+  },
+  startButtonPressed: {
+    opacity: 0.84,
+  },
+})

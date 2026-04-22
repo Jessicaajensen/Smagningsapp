@@ -30,7 +30,37 @@ const WINE_AROMAS = [
   'Tobak',
 ]
 
-const WINE_QUESTIONS = [
+type MultipleChoiceQuestion = {
+  step: number
+  kicker: string
+  title: string
+  description: string
+  type: 'multipleChoice'
+  options: string[]
+}
+
+type MultiSelectQuestion = {
+  step: number
+  kicker: string
+  title: string
+  description: string
+  type: 'multiSelect'
+  options: string[]
+}
+
+type SliderQuestion = {
+  step: number
+  kicker: string
+  title: string
+  description: string
+  type: 'slider'
+  minLabel: string
+  maxLabel: string
+}
+
+type WineQuestion = MultipleChoiceQuestion | MultiSelectQuestion | SliderQuestion
+
+const WINE_QUESTIONS: WineQuestion[] = [
   {
     step: 1,
     kicker: 'Det Visuelle (Øjet)',
