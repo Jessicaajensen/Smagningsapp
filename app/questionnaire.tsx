@@ -144,6 +144,10 @@ export default function QuestionnaireScreen() {
     setCurrentStep(1)
   }
 
+  function handleExit() {
+    router.back()
+  }
+
   function handleSelectOption(optionIndex: number) {
     setResponses({ ...responses, [`step_${currentStep}`]: optionIndex })
   }
@@ -163,13 +167,11 @@ export default function QuestionnaireScreen() {
     setResponses({ ...responses, [`step_${currentStep}`]: Math.round(value) })
   }
 
-  function handleBack() {
-    if (currentStep === 0) {
-      router.back()
-    } else if (currentStep === 1) {
+  function handlePrevious() {
+    if (currentStep === 1) {
       setCurrentStep(0)
       setBeverageType(null)
-    } else {
+    } else if (currentStep > 1) {
       setCurrentStep(currentStep - 1)
     }
   }
@@ -256,11 +258,11 @@ export default function QuestionnaireScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Pressable onPress={handleBack} style={styles.closeButton}>
+        <Pressable onPress={handleExit} style={styles.closeButton}>
           <Text style={styles.closeButtonText}>✕</Text>
         </Pressable>
         <Text style={styles.stepIndicator}>
-          Step {currentStep}/{TOTAL_STEPS}
+          Step {currentStep + 1}/{TOTAL_STEPS}
         </Text>
         <View style={styles.spacer} />
       </View>
@@ -362,8 +364,7 @@ export default function QuestionnaireScreen() {
 
       <View style={styles.footer}>
         <Pressable
-          onPress={handleBack}
-          disabled={false}
+          onPress={currentStep === 0 ? handleExit : handlePrevious}
           style={({ pressed }) => [
             styles.button,
             styles.secondaryButton,
@@ -371,7 +372,7 @@ export default function QuestionnaireScreen() {
           ]}
         >
           <Text style={styles.secondaryButtonText}>
-            {isFirstStep ? 'Cancel' : 'Back'}
+            {isFirstStep ? 'Exit' : 'Back'}
           </Text>
         </Pressable>
 
