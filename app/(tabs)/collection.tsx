@@ -121,3 +121,185 @@ export default function CollectionScreen() {
   )
 }
 
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: '#f3ede3',
+  },
+  content: {
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 40,
+    gap: 20,
+  },
+  header: {
+    gap: 10,
+  },
+  title: {
+    color: '#2e251f',
+    fontSize: 36,
+    lineHeight: 42,
+    fontWeight: '500',
+    letterSpacing: -0.4,
+  },
+  subtitle: {
+    color: '#6f6a65',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  metricsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 14,
+  },
+  metricCard: {
+    width: '48%',
+    backgroundColor: '#fffdf9',
+    borderRadius: 24,
+    paddingVertical: 22,
+    paddingHorizontal: 16,
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    minHeight: 142,
+    shadowColor: '#b8aa99',
+    shadowOpacity: 0.12,
+    shadowRadius: 14,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 2,
+  },
+  metricIconWrap: {
+    width: 34,
+    height: 34,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  metricValue: {
+    color: '#2e251f',
+    fontSize: 30,
+    fontWeight: '700',
+  },
+  metricLabel: {
+    color: '#6f6a65',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  searchCard: {
+    minHeight: 56,
+    borderRadius: 18,
+    backgroundColor: '#fffdf9',
+    paddingHorizontal: 18,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  searchPlaceholder: {
+    color: '#9b968f',
+    fontSize: 18,
+    fontWeight: '500',
+  },
+  filterRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  filterIconWrap: {
+    width: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  chipRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    flex: 1,
+  },
+  chip: {
+    paddingHorizontal: 18,
+    paddingVertical: 10,
+    borderRadius: 999,
+    backgroundColor: '#e9dfd0',
+  },
+  chipSelected: {
+    backgroundColor: '#7a2f3d',
+    shadowColor: '#7a2f3d',
+    shadowOpacity: 0.16,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 2,
+  },
+  chipText: {
+    color: '#6f6a65',
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  chipTextSelected: {
+    color: '#fffdf9',
+  },
+  list: {
+    gap: 18,
+    paddingBottom: 8,
+  },
+  itemCard: {
+    backgroundColor: '#fffdf9',
+    borderRadius: 24,
+    padding: 22,
+    shadowColor: '#b8aa99',
+    shadowOpacity: 0.12,
+    shadowRadius: 14,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 2,
+    gap: 14,
+  },
+  itemTopRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    gap: 16,
+  },
+  itemTitleGroup: {
+    flex: 1,
+    gap: 6,
+  },
+  itemTitle: {
+    color: '#2e251f',
+    fontSize: 24,
+    fontWeight: '500',
+  },
+  itemSubtitle: {
+    color: '#6f6a65',
+    fontSize: 18,
+    fontWeight: '600',
+  },
+  starRow: {
+    flexDirection: 'row',
+    gap: 2,
+    paddingTop: 2,
+  },
+  tagRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  tagChip: {
+    backgroundColor: '#e9dfd0',
+    borderRadius: 999,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+  },
+  tagText: {
+    color: '#6f6a65',
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  itemNote: {
+    color: '#5d5854',
+    fontSize: 16,
+    lineHeight: 24,
+    fontStyle: 'italic',
+  },
+  itemDate: {
+    color: '#6f6a65',
+    fontSize: 15,
+    fontWeight: '600',
+  },
+})
