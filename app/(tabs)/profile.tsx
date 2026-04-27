@@ -13,6 +13,35 @@ import {
   ProfileTagGroup,
 } from '../../components/profile-shell'
 
+const WINE_AROMAS = [
+  'Jordbær',
+  'Kirsebær',
+  'Hindbær',
+  'Solbær',
+  'Brombær',
+  'Blomme',
+  'Vanilje',
+  'Kaffe',
+  'Chokolade',
+  'Peber',
+  'Læder',
+  'Våd skovbund',
+  'Blyantstift',
+  'Tobak',
+]
+
+const TASTE_LABELS = {
+  body: ['Let', 'Medium', 'Kraftig'],
+  length: ['Kort eftersmag', 'Mellemlang eftersmag', 'Lang eftersmag'],
+  occasion: ['God til bøf', 'Hygge i sofaen', 'Fest med vennerne', 'Gaveidé'],
+}
+
+type TastingRecord = {
+  beverage_type: string
+  created_at: string
+  responses: Record<string, any>
+}
+
 export default function ProfileScreen() {
   const [isSigningOut, setIsSigningOut] = useState(false)
   const [tastingCount, setTastingCount] = useState(0)
@@ -20,6 +49,8 @@ export default function ProfileScreen() {
   const [beerCount, setBeerCount] = useState(0)
   const [latestTastingAt, setLatestTastingAt] = useState<string | null>(null)
   const [isLoadingStats, setIsLoadingStats] = useState(true)
+  const [topAromaTags, setTopAromaTags] = useState<string[]>([])
+  const [topTasteTags, setTopTasteTags] = useState<string[]>([])
   const router = useRouter()
   const { profile } = useAuthContext()
 
@@ -30,6 +61,8 @@ export default function ProfileScreen() {
         setWineCount(0)
         setBeerCount(0)
         setLatestTastingAt(null)
+        setTopAromaTags([])
+        setTopTasteTags([])
         setIsLoadingStats(false)
         return
       }
@@ -38,7 +71,7 @@ export default function ProfileScreen() {
 
       const { data, error } = await supabase
         .from('tastings')
-        .select('beverage_type, created_at')
+        .select('beverage_type, created_at, responses')
         .eq('user_id', profile.id)
         .order('created_at', { ascending: false })
 
@@ -48,18 +81,64 @@ export default function ProfileScreen() {
         setWineCount(0)
         setBeerCount(0)
         setLatestTastingAt(null)
+        setTopAromaTags([])
+        setTopTasteTags([])
         setIsLoadingStats(false)
         return
       }
 
-      const tastings = data ?? []
+      const tastings = (data ?? []) as TastingRecord[]
       const wineTastings = tastings.filter((tasting) => tasting.beverage_type === 'Wine').length
       const beerTastings = tastings.filter((tasting) => tasting.beverage_type === 'Beer').length
+      const aromaCounts = new Map<string, number>()
+      const tasteCounts = new Map<string, number>()
+
+      tastings.forEach((tasting) => {
+        const aromaIndexes = tasting.responses?.step_3
+
+        if (Array.isArray(aromaIndexes)) {
+          aromaIndexes.forEach((aromaIndex: number) => {
+            const aromaLabel = WINE_AROMAS[aromaIndex]
+
+            if (!aromaLabel) {
+              return
+            }
+
+            aromaCounts.set(aromaLabel, (aromaCounts.get(aromaLabel) ?? 0) + 1)
+          })
+        }
+
+        if (tasting.responses?.step_6 !== undefined) {
+          const bodyLabel = TASTE_LABELS.body[tasting.responses.step_6]
+          if (bodyLabel) {
+            tasteCounts.set(bodyLabel, (tasteCounts.get(bodyLabel) ?? 0) + 1)
+          }
+        }
+
+        if (tasting.responses?.step_7 !== undefined) {
+          const lengthLabel = TASTE_LABELS.length[tasting.responses.step_7]
+          if (lengthLabel) {
+            tasteCounts.set(lengthLabel, (tasteCounts.get(lengthLabel) ?? 0) + 1)
+          }
+        }
+
+        if (tasting.responses?.step_8 !== undefined) {
+          const occasionLabel = TASTE_LABELS.occasion[tasting.responses.step_8]
+          if (occasionLabel) {
+            tasteCounts.set(occasionLabel, (tasteCounts.get(occasionLabel) ?? 0) + 1)
+          }
+        }
+      })
+
+      const sortedAromas = [...aromaCounts.entries()].sort((first, second) => second[1] - first[1]).map(([label]) => label)
+      const sortedTasteTags = [...tasteCounts.entries()].sort((first, second) => second[1] - first[1]).map(([label]) => label)
 
       setTastingCount(tastings.length)
       setWineCount(wineTastings)
       setBeerCount(beerTastings)
       setLatestTastingAt(tastings[0]?.created_at ?? null)
+      setTopAromaTags(sortedAromas.slice(0, 6))
+      setTopTasteTags(sortedTasteTags.slice(0, 6))
       setIsLoadingStats(false)
     }
 
@@ -80,8 +159,6 @@ export default function ProfileScreen() {
     { icon: '⌁', value: isLoadingStats ? '—' : latestTastingLabel, label: 'Seneste' },
   ]
 
-  const aromaTags = ['Roser', 'Tjære', 'Kirsebær', 'Lakrids', 'Kaffe', 'Tørret frugt']
-  const tasteTags = ['Mørk frugt', 'Trøffel', 'Læder', 'Ristet malt', 'Chokolade', 'Vanilje']
   const favoriteReviews = [
     {
       title: 'Barolo Riserva 2013',
@@ -103,10 +180,20 @@ export default function ProfileScreen() {
     },
   ]
 
+  const favoriteAroma = topAromaTags[0]
+  const favoriteTaste = topTasteTags[0]
+  const dominantBeverage = wineCount >= beerCount ? 'vin' : 'øl'
+
   const insights = [
-    'Du foretrækker komplekse aromaer som roser og tjære',
-    'Din gennemsnitlige rating er 4.3, og du er kritisk og selektiv',
-    'Du har smagt flest vine (1 smagning)',
+    favoriteAroma
+      ? `Din mest tilbagevendende aroma er ${favoriteAroma.toLowerCase()}`
+      : 'Du har endnu ikke nok aroma-data til at vise et mønster',
+    favoriteTaste
+      ? `Et gennemgående smagsmønster er ${favoriteTaste.toLowerCase()}`
+      : 'Dine smagsnoter bliver mere præcise, når du får flere smagninger',
+    tastingCount > 0
+      ? `Du har smagt flest ${dominantBeverage} (${Math.max(wineCount, beerCount)} af ${tastingCount} smagninger)`
+      : 'Dine smagsindsigter vises, når du har gemt din første smagning',
   ]
 
   function handleSignOut() {
@@ -144,8 +231,14 @@ export default function ProfileScreen() {
         ))}
       </View>
 
-      <ProfileTagGroup title="Din smagsprofil" tags={aromaTags} />
-      <ProfileTagGroup title="Dine foretrukne smage" tags={tasteTags} />
+      <ProfileTagGroup
+        title="Din smagsprofil"
+        tags={topAromaTags.length > 0 ? topAromaTags : ['Ingen aromaer endnu']}
+      />
+      <ProfileTagGroup
+        title="Dine foretrukne smage"
+        tags={topTasteTags.length > 0 ? topTasteTags : ['Ingen smagsdata endnu']}
+      />
 
       <View style={styles.sectionSpacing}>
         <Text style={styles.sectionHeading}>Dine favoritter</Text>
