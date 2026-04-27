@@ -1,15 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons'
-import { ScrollView, Text, View, StyleSheet, Pressable } from 'react-native'
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { COLLECTION_FILTER_CHIPS, COLLECTION_SUMMARY_CARDS } from '../../lib/collection-constants'
 import { MOCK_TASTINGS } from '../../lib/mock-tastings'
-
-const SUMMARY_CARDS = [
-  { icon: 'wine-outline' as const, value: '1', label: 'Vin' },
-  { icon: 'beer-outline' as const, value: '1', label: 'Øl' },
-  { icon: 'water-outline' as const, value: '1', label: 'Whisky' },
-  { icon: 'star-outline' as const, value: '4.3', label: 'Gns. rating' },
-]
-
-const FILTER_CHIPS = ['Alle', 'Vin', 'Øl', 'Whisky', 'Spiritus']
 
 function StarRating({ rating }: { rating: number }) {
   return (
@@ -35,7 +27,7 @@ export default function CollectionScreen() {
       </View>
 
       <View style={styles.metricsGrid}>
-        {SUMMARY_CARDS.map((card) => (
+        {COLLECTION_SUMMARY_CARDS.map((card) => (
           <View key={card.label} style={styles.metricCard}>
             <View style={styles.metricIconWrap}>
               <Ionicons name={card.icon} size={26} color={card.label === 'Gns. rating' ? '#d8a86c' : '#7a2f3d'} />
@@ -56,7 +48,7 @@ export default function CollectionScreen() {
           <Ionicons name="funnel-outline" size={22} color="#6f6a65" />
         </View>
         <View style={styles.chipRow}>
-          {FILTER_CHIPS.map((chip, index) => (
+          {COLLECTION_FILTER_CHIPS.map((chip, index) => (
             <Pressable
               key={chip}
               style={[styles.chip, index === 0 && styles.chipSelected]}
