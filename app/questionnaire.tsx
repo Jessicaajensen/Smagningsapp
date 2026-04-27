@@ -1,6 +1,7 @@
-import { View, Text, Pressable, StyleSheet, SafeAreaView, ScrollView, Alert } from 'react-native'
+import { View, Text, Pressable, StyleSheet, SafeAreaView, ScrollView, Alert, Image } from 'react-native'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useState } from 'react'
+import * as ImagePicker from 'expo-image-picker'
 import { QuestionnaireQuestion } from '../components/questionnaire-question'
 import { AromaGrid } from '../components/aroma-grid'
 import { SliderQuestion } from '../components/slider-question'
@@ -137,6 +138,7 @@ export default function QuestionnaireScreen() {
   const [currentStep, setCurrentStep] = useState(0)
   const [beverageType, setBeverageType] = useState<string | null>(null)
   const [responses, setResponses] = useState<Record<string, any>>({})
+  const [selectedImage, setSelectedImage] = useState<ImagePicker.ImagePickerAsset | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   function handleSelectBeverage(type: string) {
@@ -172,6 +174,32 @@ export default function QuestionnaireScreen() {
 
   function handleSliderChange(value: number) {
     setResponses({ ...responses, [`step_${currentStep}`]: Math.round(value) })
+  }
+
+  async function handlePickImage() {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
+
+    if (!permissionResult.granted) {
+      Alert.alert('Permission required', 'We need access to your photos to upload an image.')
+      return
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 0.85,
+    })
+
+    if (result.canceled || !result.assets.length) {
+      return
+    }
+
+    setSelectedImage(result.assets[0])
+  }
+
+  function clearSelectedImage() {
+    setSelectedImage(null)
   }
 
   function handlePrevious() {
@@ -211,16 +239,41 @@ export default function QuestionnaireScreen() {
       return
     }
 
-   
     submitTastingToSupabase()
+  }
+
+  async function uploadSelectedImage() {
+    if (!selectedImage) {
+      return null
+    }
+
+    const imageResponse = await fetch(selectedImage.uri)
+    const imageBlob = await imageResponse.blob()
+    const fileExtension = selectedImage.fileName?.split('.').pop() ?? 'jpg'
+    const filePath = `${profile?.id}/${Date.now()}.${fileExtension}`
+
+    const { error } = await supabase.storage.from('tasting-images').upload(filePath, imageBlob, {
+      contentType: selectedImage.mimeType ?? 'image/jpeg',
+      upsert: false,
+    })
+
+    if (error) {
+      throw error
+    }
+
+    const { data } = supabase.storage.from('tasting-images').getPublicUrl(filePath)
+    return data.publicUrl
   }
 
   async function submitTastingToSupabase() {
     try {
+      const imageUrl = await uploadSelectedImage()
+
       const { error } = await supabase.from('tastings').insert({
         user_id: profile?.id,
         beverage_type: beverageType,
         responses: responses,
+        image_url: imageUrl,
         created_at: new Date().toISOString(),
       })
 
@@ -365,6 +418,58 @@ export default function QuestionnaireScreen() {
               </Text>
             </>
           )}
+        </View>
+
+        <View style={questionnaireStyles.imagePickerCard}>
+          <View style={questionnaireStyles.imagePickerHeader}>
+            <Text style={questionnaireStyles.imagePickerTitle}>Billede</Text>
+            <Text style={questionnaireStyles.imagePickerText}>Valgfrit foto til denne smagning</Text>
+          </View>
+
+          {selectedImage ? (
+            <View style={questionnaireStyles.imagePreviewBlock}>
+              <Image source={{ uri: selectedImage.uri }} style={questionnaireStyles.imagePreview} />
+              <Text style={questionnaireStyles.imagePreviewLabel} numberOfLines={1}>
+                {selectedImage.fileName ?? 'Valgt billede'}
+              </Text>
+            </View>
+          ) : (
+            <Text style={questionnaireStyles.imagePickerText}>
+              Tilføj et billede fra din kamerarulle, hvis du vil gemme et visuelt minde sammen med vurderingen.
+            </Text>
+          )}
+
+          <View style={questionnaireStyles.imagePickerActions}>
+            <Pressable
+              onPress={handlePickImage}
+              disabled={isSubmitting}
+              style={({ pressed }) => [
+                styles.button,
+                questionnaireStyles.ghostButton,
+                pressed && !isSubmitting && styles.buttonPressed,
+                isSubmitting && styles.buttonDisabled,
+              ]}
+            >
+              <Text style={questionnaireStyles.ghostButtonText}>
+                {selectedImage ? 'Skift billede' : 'Vælg billede'}
+              </Text>
+            </Pressable>
+
+            {selectedImage ? (
+              <Pressable
+                onPress={clearSelectedImage}
+                disabled={isSubmitting}
+                style={({ pressed }) => [
+                  styles.button,
+                  questionnaireStyles.ghostButton,
+                  pressed && !isSubmitting && styles.buttonPressed,
+                  isSubmitting && styles.buttonDisabled,
+                ]}
+              >
+                <Text style={questionnaireStyles.ghostButtonText}>Fjern</Text>
+              </Pressable>
+            ) : null}
+          </View>
         </View>
       </ScrollView>
 
