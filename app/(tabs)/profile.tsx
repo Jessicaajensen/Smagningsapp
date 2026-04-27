@@ -11,6 +11,7 @@ import {
   ProfileReview,
   ProfileTagGroup,
 } from '../../components/profile-shell'
+import { MOCK_TASTINGS } from '../../lib/mock-tastings'
 import { supabase } from '../../lib/supabase'
 import { TASTE_LABELS, WINE_AROMAS } from '../../lib/tasting-constants'
 
@@ -18,6 +19,10 @@ type TastingRecord = {
   beverage_type: string
   created_at: string
   responses: Record<string, any>
+}
+
+function toStarRating(rating: number) {
+  return `${'★'.repeat(rating)}${'☆'.repeat(Math.max(0, 5 - rating))}`
 }
 
 export default function ProfileScreen() {
@@ -136,26 +141,12 @@ export default function ProfileScreen() {
     { icon: '⌁', value: isLoadingStats ? '—' : latestTastingLabel, label: 'Seneste' },
   ]
 
-  const favoriteReviews = [
-    {
-      title: 'Barolo Riserva 2013',
-      subtitle: 'Rødvin - Piemonte',
-      rating: '★★★★★',
-      note: 'En af de bedste Baroloer jeg har smagt. Fantastisk struktur og dybde.',
-    },
-    {
-      title: 'To Øl Black Ball Porter',
-      subtitle: 'Baltic Porter',
-      rating: '★★★★☆',
-      note: 'Rigtig god dansk porter. Perfekt til koldt vejr.',
-    },
-    {
-      title: 'Glenfiddich 18',
-      subtitle: 'Single Malt - Speyside',
-      rating: '★★★★☆',
-      note: 'Flot balanceret whisky. God kompleksitet for prisen.',
-    },
-  ]
+  const favoriteReviews = MOCK_TASTINGS.map((tasting) => ({
+    title: tasting.title,
+    subtitle: tasting.subtitle,
+    rating: toStarRating(tasting.rating),
+    note: tasting.note,
+  }))
 
   const favoriteAroma = topAromaTags[0]
   const favoriteTaste = topTasteTags[0]

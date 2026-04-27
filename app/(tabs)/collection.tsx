@@ -1,5 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { ScrollView, Text, View, StyleSheet, Pressable } from 'react-native'
+import { MOCK_TASTINGS } from '../../lib/mock-tastings'
 
 const SUMMARY_CARDS = [
   { icon: 'wine-outline' as const, value: '1', label: 'Vin' },
@@ -9,33 +10,6 @@ const SUMMARY_CARDS = [
 ]
 
 const FILTER_CHIPS = ['Alle', 'Vin', 'Øl', 'Whisky', 'Spiritus']
-
-const COLLECTION_ITEMS = [
-  {
-    title: 'Barolo Riserva 2013',
-    subtitle: 'Rødvin - Piemonte',
-    rating: 5,
-    tags: ['Roser', 'Tjære', 'Kirsebær', '+1'],
-    note: 'En af de bedste Baroloer jeg har smagt. Fantastisk struktur og dybde.',
-    date: '8. april 2026',
-  },
-  {
-    title: 'To Øl Black Ball Porter',
-    subtitle: 'Baltic Porter',
-    rating: 4,
-    tags: ['Kaffe', 'Tørret frugt', 'Lakridspulver'],
-    note: 'Rigtig god dansk porter. Perfekt til koldt vejr.',
-    date: '5. april 2026',
-  },
-  {
-    title: 'Glenfiddich 18',
-    subtitle: 'Single Malt - Speyside',
-    rating: 4,
-    tags: ['Æble', 'Egetræ', 'Honning'],
-    note: 'Flot balanceret whisky. God kompleksitet for prisen.',
-    date: '2. april 2026',
-  },
-]
 
 function StarRating({ rating }: { rating: number }) {
   return (
@@ -94,7 +68,7 @@ export default function CollectionScreen() {
       </View>
 
       <View style={styles.list}>
-        {COLLECTION_ITEMS.map((item) => (
+        {MOCK_TASTINGS.map((item) => (
           <View key={item.title} style={styles.itemCard}>
             <View style={styles.itemTopRow}>
               <View style={styles.itemTitleGroup}>
