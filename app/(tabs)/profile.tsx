@@ -1,8 +1,7 @@
-import { ScrollView, Text, View } from 'react-native'
 import { useRouter } from 'expo-router'
-import { profileStyles as styles } from './profile.styles'
-import { supabase } from '../../lib/supabase'
 import { useEffect, useState } from 'react'
+import { ScrollView, Text, View } from 'react-native'
+import { profileStyles as styles } from './profile.styles'
 import { useAuthContext } from '../../hooks/use-auth-context'
 import {
   ProfileAction,
@@ -12,6 +11,7 @@ import {
   ProfileReview,
   ProfileTagGroup,
 } from '../../components/profile-shell'
+import { supabase } from '../../lib/supabase'
 import { TASTE_LABELS, WINE_AROMAS } from '../../lib/tasting-constants'
 
 type TastingRecord = {

@@ -1,14 +1,14 @@
-import { View, Text, Pressable, StyleSheet, SafeAreaView, ScrollView, Alert, Image } from 'react-native'
+import * as ImagePicker from 'expo-image-picker'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { useState } from 'react'
-import * as ImagePicker from 'expo-image-picker'
-import { QuestionnaireQuestion } from '../components/questionnaire-question'
+import { Alert, Image, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { AromaGrid } from '../components/aroma-grid'
+import { QuestionnaireQuestion } from '../components/questionnaire-question'
 import { SliderQuestion } from '../components/slider-question'
-import { questionnaireStyles } from './(tabs)/questionnaire.styles'
-import { supabase } from '../lib/supabase'
 import { useAuthContext } from '../hooks/use-auth-context'
+import { supabase } from '../lib/supabase'
 import { WINE_AROMAS } from '../lib/tasting-constants'
+import { questionnaireStyles } from './(tabs)/questionnaire.styles'
 
 const BEVERAGE_TYPES = ['Wine', 'Beer', 'Whisky', 'Gin']
 const TOTAL_STEPS = 9 // Step 0 = drikkevare valg step 1-8 er spørgsmål
@@ -31,7 +31,7 @@ type MultiSelectQuestion = {
   options: string[]
 }
 
-type SliderQuestion = {
+type SliderScaleQuestion = {
   step: number
   kicker: string
   title: string
@@ -41,7 +41,7 @@ type SliderQuestion = {
   maxLabel: string
 }
 
-type WineQuestion = MultipleChoiceQuestion | MultiSelectQuestion | SliderQuestion
+type WineQuestion = MultipleChoiceQuestion | MultiSelectQuestion | SliderScaleQuestion
 
 const WINE_QUESTIONS: WineQuestion[] = [
   {
