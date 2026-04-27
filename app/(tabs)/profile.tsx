@@ -2,7 +2,8 @@ import { ScrollView, Text, View } from 'react-native'
 import { useRouter } from 'expo-router'
 import { profileStyles as styles } from './profile.styles'
 import { supabase } from '../../lib/supabase'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useAuthContext } from '../../hooks/use-auth-context'
 import {
   ProfileAction,
   ProfileHero,
@@ -14,13 +15,69 @@ import {
 
 export default function ProfileScreen() {
   const [isSigningOut, setIsSigningOut] = useState(false)
+  const [tastingCount, setTastingCount] = useState(0)
+  const [wineCount, setWineCount] = useState(0)
+  const [beerCount, setBeerCount] = useState(0)
+  const [latestTastingAt, setLatestTastingAt] = useState<string | null>(null)
+  const [isLoadingStats, setIsLoadingStats] = useState(true)
   const router = useRouter()
+  const { profile } = useAuthContext()
+
+  useEffect(() => {
+    async function loadProfileStats() {
+      if (!profile?.id) {
+        setTastingCount(0)
+        setWineCount(0)
+        setBeerCount(0)
+        setLatestTastingAt(null)
+        setIsLoadingStats(false)
+        return
+      }
+
+      setIsLoadingStats(true)
+
+      const { data, error } = await supabase
+        .from('tastings')
+        .select('beverage_type, created_at')
+        .eq('user_id', profile.id)
+        .order('created_at', { ascending: false })
+
+      if (error) {
+        console.error('Failed to load profile stats:', error)
+        setTastingCount(0)
+        setWineCount(0)
+        setBeerCount(0)
+        setLatestTastingAt(null)
+        setIsLoadingStats(false)
+        return
+      }
+
+      const tastings = data ?? []
+      const wineTastings = tastings.filter((tasting) => tasting.beverage_type === 'Wine').length
+      const beerTastings = tastings.filter((tasting) => tasting.beverage_type === 'Beer').length
+
+      setTastingCount(tastings.length)
+      setWineCount(wineTastings)
+      setBeerCount(beerTastings)
+      setLatestTastingAt(tastings[0]?.created_at ?? null)
+      setIsLoadingStats(false)
+    }
+
+    void loadProfileStats()
+  }, [profile?.id])
+
+  const latestTastingLabel = latestTastingAt
+    ? new Date(latestTastingAt).toLocaleDateString('da-DK', {
+        day: 'numeric',
+        month: 'short',
+      })
+    : '—'
 
   const profileMetrics = [
-    { icon: '↗', value: '3', label: 'Smagninger' },
-    { icon: '☆', value: '4.3', label: 'Gns. rating' },
-    { icon: '🍷', value: '1', label: 'Vine' },
-    { icon: '🍺', value: '1', label: 'Øl' },
+    { icon: '↗', value: isLoadingStats ? '—' : String(tastingCount), label: 'Smagninger' },
+    { icon: '🍷', value: isLoadingStats ? '—' : String(wineCount), label: 'Vine' },
+    { icon: '🍺', value: isLoadingStats ? '—' : String(beerCount), label: 'Øl' },
+    { icon: '⌁', value: isLoadingStats ? '—' : latestTastingLabel, label: 'Seneste' },
   ]
 
   const aromaTags = ['Roser', 'Tjære', 'Kirsebær', 'Lakrids', 'Kaffe', 'Tørret frugt']
@@ -75,7 +132,11 @@ export default function ProfileScreen() {
 
   return (
     <ScrollView style={styles.screenCenter} contentContainerStyle={styles.pageContent}>
-      <ProfileHero initials="ME" title="Min smagsprofil" subtitle="Baseret på 3 smagninger" />
+      <ProfileHero
+        initials="ME"
+        title="Min smagsprofil"
+        subtitle={isLoadingStats ? 'Henter smagninger...' : `Baseret på ${tastingCount} smagninger`}
+      />
 
       <View style={styles.metricsGrid}>
         {profileMetrics.map((metric) => (
