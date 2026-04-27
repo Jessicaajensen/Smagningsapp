@@ -12,29 +12,7 @@ import {
   ProfileReview,
   ProfileTagGroup,
 } from '../../components/profile-shell'
-
-const WINE_AROMAS = [
-  'Jordbær',
-  'Kirsebær',
-  'Hindbær',
-  'Solbær',
-  'Brombær',
-  'Blomme',
-  'Vanilje',
-  'Kaffe',
-  'Chokolade',
-  'Peber',
-  'Læder',
-  'Våd skovbund',
-  'Blyantstift',
-  'Tobak',
-]
-
-const TASTE_LABELS = {
-  body: ['Let', 'Medium', 'Kraftig'],
-  length: ['Kort eftersmag', 'Mellemlang eftersmag', 'Lang eftersmag'],
-  occasion: ['God til bøf', 'Hygge i sofaen', 'Fest med vennerne', 'Gaveidé'],
-}
+import { TASTE_LABELS, WINE_AROMAS } from '../../lib/tasting-constants'
 
 type TastingRecord = {
   beverage_type: string
@@ -54,15 +32,19 @@ export default function ProfileScreen() {
   const router = useRouter()
   const { profile } = useAuthContext()
 
+  function resetStats() {
+    setTastingCount(0)
+    setWineCount(0)
+    setBeerCount(0)
+    setLatestTastingAt(null)
+    setTopAromaTags([])
+    setTopTasteTags([])
+  }
+
   useEffect(() => {
     async function loadProfileStats() {
       if (!profile?.id) {
-        setTastingCount(0)
-        setWineCount(0)
-        setBeerCount(0)
-        setLatestTastingAt(null)
-        setTopAromaTags([])
-        setTopTasteTags([])
+        resetStats()
         setIsLoadingStats(false)
         return
       }
@@ -77,12 +59,7 @@ export default function ProfileScreen() {
 
       if (error) {
         console.error('Failed to load profile stats:', error)
-        setTastingCount(0)
-        setWineCount(0)
-        setBeerCount(0)
-        setLatestTastingAt(null)
-        setTopAromaTags([])
-        setTopTasteTags([])
+        resetStats()
         setIsLoadingStats(false)
         return
       }

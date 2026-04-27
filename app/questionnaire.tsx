@@ -8,28 +8,10 @@ import { SliderQuestion } from '../components/slider-question'
 import { questionnaireStyles } from './(tabs)/questionnaire.styles'
 import { supabase } from '../lib/supabase'
 import { useAuthContext } from '../hooks/use-auth-context'
-
-const OptionStyles = questionnaireStyles
+import { WINE_AROMAS } from '../lib/tasting-constants'
 
 const BEVERAGE_TYPES = ['Wine', 'Beer', 'Whisky', 'Gin']
 const TOTAL_STEPS = 9 // Step 0 = drikkevare valg step 1-8 er spørgsmål
-
-const WINE_AROMAS = [
-  'Jordbær',
-  'Kirsebær',
-  'Hindbær',
-  'Solbær',
-  'Brombær',
-  'Blomme',
-  'Vanilje',
-  'Kaffe',
-  'Chokolade',
-  'Peber',
-  'Læder',
-  'Våd skovbund',
-  'Blyantstift',
-  'Tobak',
-]
 
 type MultipleChoiceQuestion = {
   step: number
@@ -141,9 +123,13 @@ export default function QuestionnaireScreen() {
   const [selectedImage, setSelectedImage] = useState<ImagePicker.ImagePickerAsset | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  function setStepResponse(step: number, value: unknown) {
+    setResponses((previous) => ({ ...previous, [`step_${step}`]: value }))
+  }
+
   function handleSelectBeverage(type: string) {
     setBeverageType(type)
-    setResponses({ ...responses, step_0: type })
+    setStepResponse(0, type)
     // gå til næste step
     setCurrentStep(1)
   }
@@ -158,22 +144,23 @@ export default function QuestionnaireScreen() {
   }
 
   function handleSelectOption(optionIndex: number) {
-    setResponses({ ...responses, [`step_${currentStep}`]: optionIndex })
+    setStepResponse(currentStep, optionIndex)
   }
 
   function handleToggleAroma(aromaIndex: number) {
-    const currentAromas = responses[`step_${currentStep}`] || []
-    let updatedAromas
-    if (currentAromas.includes(aromaIndex)) {
-      updatedAromas = currentAromas.filter((idx: number) => idx !== aromaIndex)
-    } else {
-      updatedAromas = [...currentAromas, aromaIndex]
-    }
-    setResponses({ ...responses, [`step_${currentStep}`]: updatedAromas })
+    setResponses((previous) => {
+      const key = `step_${currentStep}`
+      const currentAromas = Array.isArray(previous[key]) ? previous[key] : []
+      const updatedAromas = currentAromas.includes(aromaIndex)
+        ? currentAromas.filter((idx: number) => idx !== aromaIndex)
+        : [...currentAromas, aromaIndex]
+
+      return { ...previous, [key]: updatedAromas }
+    })
   }
 
   function handleSliderChange(value: number) {
-    setResponses({ ...responses, [`step_${currentStep}`]: Math.round(value) })
+    setStepResponse(currentStep, Math.round(value))
   }
 
   async function handlePickImage() {
@@ -400,7 +387,6 @@ export default function QuestionnaireScreen() {
                 )}
                 {currentQuestion.type === 'slider' && (
                   <SliderQuestion
-                    title={currentQuestion.title}
                     minLabel={currentQuestion.minLabel}
                     maxLabel={currentQuestion.maxLabel}
                     value={responses[`step_${currentStep}`] || 50}

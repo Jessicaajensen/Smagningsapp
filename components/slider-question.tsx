@@ -1,7 +1,6 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 
 interface SliderQuestionProps {
-  title: string
   minLabel: string
   maxLabel: string
   value: number
@@ -9,7 +8,6 @@ interface SliderQuestionProps {
 }
 
 export function SliderQuestion({
-  title,
   minLabel,
   maxLabel,
   value,

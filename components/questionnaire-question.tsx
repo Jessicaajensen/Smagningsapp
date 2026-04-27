@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { Text } from 'react-native'
 
 interface QuestionnaireQuestionProps {
   kicker: string
