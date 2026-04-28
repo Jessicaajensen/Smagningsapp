@@ -52,7 +52,9 @@ export function ProfileHero({
 export function ProfileMetric({ icon, value, label }: ProfileMetricProps) {
   return (
     <View style={styles.metricCard}>
-      <Text style={styles.metricIcon}>{icon}</Text>
+      <View style={styles.metricIconSlot}>
+        <Text style={styles.metricIcon}>{icon}</Text>
+      </View>
       <Text style={styles.metricValue}>{value}</Text>
       <Text style={styles.metricLabel}>{label}</Text>
     </View>
@@ -156,31 +158,38 @@ const styles = StyleSheet.create({
     minWidth: '47%',
     backgroundColor: '#fffdf9',
     borderRadius: 24,
-    paddingVertical: 22,
-    paddingHorizontal: 16,
+    minHeight: 188,
+    paddingVertical: 18,
+    paddingHorizontal: 14,
     alignItems: 'center',
     justifyContent: 'center',
+    gap: 6,
     shadowColor: '#b8aa99',
     shadowOpacity: 0.1,
     shadowRadius: 12,
     shadowOffset: { width: 0, height: 6 },
-    elevation: 2,
+  },
+  metricIconSlot: {
+    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   metricIcon: {
     color: '#7a2f3d',
     fontSize: 22,
-    marginBottom: 8,
+    textAlign: 'center',
   },
   metricValue: {
     color: '#2e251f',
     fontSize: 28,
     fontWeight: '700',
-    marginBottom: 4,
+    textAlign: 'center',
   },
   metricLabel: {
     color: '#71675f',
     fontSize: 14,
     fontWeight: '600',
+    textAlign: 'center',
   },
   sectionCard: {
     backgroundColor: '#fffdf9',
