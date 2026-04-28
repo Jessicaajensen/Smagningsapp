@@ -7,7 +7,7 @@ export const profileStyles = StyleSheet.create({
   },
   pageContent: {
     padding: 24,
-    paddingBottom: 40,
+    paddingBottom: 80,
     gap: 20,
   },
   metricsGrid: {

@@ -534,6 +534,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingHorizontal: 24,
     paddingVertical: 24,
+    paddingBottom: 100,
   },
   mainCard: {
     backgroundColor: '#fffdf9',

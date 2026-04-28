@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router'
 import { useEffect, useState } from 'react'
-import { ScrollView, Text, View } from 'react-native'
+import { SafeAreaView, ScrollView, Text, View } from 'react-native'
 import { profileStyles as styles } from './profile.styles'
 import { useAuthContext } from '../../hooks/use-auth-context'
 import {
@@ -186,7 +186,8 @@ export default function ProfileScreen() {
   }
 
   return (
-    <ScrollView style={styles.screenCenter} contentContainerStyle={styles.pageContent}>
+    <SafeAreaView style={styles.screenCenter}>
+      <ScrollView contentContainerStyle={styles.pageContent}>
       <ProfileHero
         initials="ME"
         title="Min smagsprofil"
@@ -222,6 +223,7 @@ export default function ProfileScreen() {
       <View style={styles.actionsRow}>
         <ProfileAction label={isSigningOut ? 'Signing out...' : 'Sign out'} onPress={handleSignOut} variant="primary" />
       </View>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   )
 }
