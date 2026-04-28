@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
     color: '#fffdf9',
     fontSize: 16,
     fontWeight: '700',
+    textAlign: 'center',
   },
   secondaryButton: {
     borderWidth: 1,
@@ -178,6 +179,7 @@ const styles = StyleSheet.create({
     color: '#7a2f3d',
     fontSize: 16,
     fontWeight: '700',
+    textAlign: 'center',
   },
   buttonDisabled: {
     opacity: 0.65,

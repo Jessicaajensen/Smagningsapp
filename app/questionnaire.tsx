@@ -540,7 +540,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fffdf9',
     borderRadius: 24,
     padding: 24,
-    paddingBottom: 32,
+    paddingBottom: 40,
     marginBottom: 20,
     shadowColor: '#b8aa99',
     shadowOpacity: 0.16,
@@ -597,6 +597,7 @@ const styles = StyleSheet.create({
     color: '#7a2f3d',
     fontSize: 16,
     fontWeight: '700',
+    textAlign: 'center',
   },
   beverageButtonTextSelected: {
     color: '#fffdf9',
@@ -626,6 +627,7 @@ const styles = StyleSheet.create({
     color: '#fffdf9',
     fontSize: 16,
     fontWeight: '700',
+    textAlign: 'center',
   },
   secondaryButton: {
     borderWidth: 1,
@@ -636,6 +638,7 @@ const styles = StyleSheet.create({
     color: '#7a2f3d',
     fontSize: 16,
     fontWeight: '700',
+    textAlign: 'center',
   },
   buttonPressed: {
     opacity: 0.8,

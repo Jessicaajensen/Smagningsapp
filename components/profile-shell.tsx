@@ -289,6 +289,7 @@ const styles = StyleSheet.create({
   actionText: {
     fontSize: 16,
     fontWeight: '700',
+    textAlign: 'center',
   },
   primaryActionText: {
     color: '#fffdf9',

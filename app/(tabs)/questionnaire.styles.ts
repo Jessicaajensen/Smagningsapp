@@ -6,6 +6,7 @@ export const questionnaireStyles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 12,
     marginTop: 16,
+    paddingBottom: 10,
   },
   optionButton: {
     flex: 1,
