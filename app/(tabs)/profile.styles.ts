@@ -7,13 +7,14 @@ export const profileStyles = StyleSheet.create({
   },
   pageContent: {
     padding: 24,
-    paddingBottom: 80,
+    paddingBottom: 20,
     gap: 20,
   },
   metricsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 14,
+    marginBottom: 150,
   },
   sectionSpacing: {
     gap: 16,
