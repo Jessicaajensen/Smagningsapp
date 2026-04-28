@@ -37,4 +37,11 @@ export const sharedStyles = StyleSheet.create({
     lineHeight: 24,
     fontWeight: '500',
   },
+  item: {
+    color: '#2e251f',
+    fontSize: 16,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e8ddd1',
+  },
 });

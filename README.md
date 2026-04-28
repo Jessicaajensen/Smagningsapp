@@ -1,12 +1,22 @@
 # Smagningsapp
 
-Expo Router starter with separate routes for Home, Profile, Collection, and Feed.
 
 ## Run
 
-```bash
+```
 npm install
 npm run start
 ```
 
-Then open `/home`, `/profile`, `/collection`, or `/feed` from the app.
+
+supabase kode: pitsUj-7robtu-vathys
+
+access token: sbp_a3512118c67a6ba95a6a14e9251e7b449ce8bf6a
+
+testusers:
+Email: smagningsapptest1776413201707@gmail.com
+Password: TestUser123A
+User ID: 09ecae95-7f5c-4dfd-9ec1-67617ed1ffd5
+
+Email: smagningsappdemo1776413607543@gmail.com
+Password: TestUser123A

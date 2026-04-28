@@ -2,6 +2,7 @@
   "expo": {
     "name": "Smagningsapp",
     "slug": "smagningsapp",
+    "scheme": "smagningsapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
@@ -12,7 +13,9 @@
       "**/*"
     ],
     "plugins": [
-      "expo-asset"
+      "expo-asset",
+      "expo-sqlite",
+      "expo-secure-store"
     ]
   }
 }
