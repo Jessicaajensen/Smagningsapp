@@ -534,12 +534,14 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingHorizontal: 24,
     paddingVertical: 24,
-    paddingBottom: 100,
+    paddingBottom: 120,
   },
   mainCard: {
     backgroundColor: '#fffdf9',
     borderRadius: 24,
     padding: 24,
+    paddingBottom: 80,
+    marginBottom: 48,
     shadowColor: '#b8aa99',
     shadowOpacity: 0.16,
     shadowRadius: 16,

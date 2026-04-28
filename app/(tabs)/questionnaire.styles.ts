@@ -36,7 +36,8 @@ export const questionnaireStyles = StyleSheet.create({
     color: '#fffdf9',
   },
   imagePickerCard: {
-    marginTop: 20,
+    marginTop: 12,
+    marginBottom: 32,
     padding: 16,
     borderRadius: 16,
     backgroundColor: '#fffaf3',
