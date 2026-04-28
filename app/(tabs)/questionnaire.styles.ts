@@ -10,6 +10,7 @@ export const questionnaireStyles = StyleSheet.create({
   optionButton: {
     flex: 1,
     minWidth: '45%',
+    minHeight: 60,
     backgroundColor: '#fffaf3',
     borderWidth: 2,
     borderColor: '#d9cab8',
@@ -36,8 +37,8 @@ export const questionnaireStyles = StyleSheet.create({
     color: '#fffdf9',
   },
   imagePickerCard: {
-    marginTop: 12,
-    marginBottom: 32,
+    marginTop: 0,
+    marginBottom: 28,
     padding: 16,
     borderRadius: 16,
     backgroundColor: '#fffaf3',

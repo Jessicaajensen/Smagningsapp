@@ -39,6 +39,7 @@ export default function TabsLayout() {
         headerShown: true,
         headerStyle: {
           backgroundColor: '#fffdf9',
+          height: 130,
         },
         headerShadowVisible: false,
         headerTitleAlign: 'left',
@@ -137,13 +138,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   startButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: 42,
+    height: 42,
+    borderRadius: 21,
     backgroundColor: '#7a2f3d',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 4,
+    marginRight: 8,
   },
   startButtonPressed: {
     opacity: 0.84,
